@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: task-with-git-ref
+spec: 
+  params:
+    - name: repo-info_ARTIFACT_INPUTS
+      description: The source code repo artifact
+      type: object
+      properties:
+        uri: {}
+        digest: {}
+
+  results:
+    - name: art2-ARTIFACT_OUTPUTS
+      type: object
+      properties:
+        uri: {}
+        digest: {}
+        isBuildArtifact: {}
+
+  steps:
+    - name: step-01
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/renzodavid9/tekton-remote-srcs
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: steps/01-simple.yaml
