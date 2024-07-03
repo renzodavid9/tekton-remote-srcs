@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1alpha1
+kind: StepAction
+metadata:
+  name: simple
+spec:
+  params:
+    - name: CHAINS-GIT_URL
+      type: string
+      default: https://github.com/tektoncd/pipeline/renzor
+    - name: CHAINS-GIT_COMMIT
+      type: string
+      default: 7f2f46e1b97df36b2b82d1b1d87c81b8b3d21601
+  results:
+    - name: art1-ARTIFACT_OUTPUTS
+      type: object
+      properties:
+        uri: {}
+        digest: {}
+        isBuildArtifact: {}
+  image: bash:latest
+  script: |
+    echo -n "{\"uri\":\"gcr.io/foo/img02\", \"digest\":\"sha256:f7b93fed74352c53e7fd82f1e890723f04a963fcd344c65855c57a1972fbe02d\", \"isBuildArtifact\": \"true\"}" > $(step.results.art1-ARTIFACT_OUTPUTS.path)
