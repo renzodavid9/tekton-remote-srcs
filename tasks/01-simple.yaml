@@ -1,18 +1,25 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: task-with-git-ref
+  name: remote-task-1
 spec: 
   params:
-    - name: repo-info_ARTIFACT_INPUTS
-      description: The source code repo artifact
+    - name: CHAINS-GIT_URL
+      type: string
+      default: https://github.com/repo/4
+
+    - name: CHAINS-GIT_COMMIT
+      type: string
+      default: 6adaa1ee473d1f3adc182c814961112b8d7cea0c
+
+  results:
+    - name: art3-ARTIFACT_INPUTS
       type: object
       properties:
         uri: {}
         digest: {}
 
-  results:
-    - name: art2-ARTIFACT_OUTPUTS
+    - name: art4-ARTIFACT_OUTPUTS
       type: object
       properties:
         uri: {}
@@ -20,13 +27,23 @@ spec:
         isBuildArtifact: {}
 
   steps:
-    - name: step-01
+    - name: first-step
       ref:
         resolver: git
         params:
-          - name: url
-            value: https://github.com/renzodavid9/tekton-remote-srcs
-          - name: revision
-            value: main
-          - name: pathInRepo
-            value: steps/01-simple.yaml
+        - name: url
+          value: https://github.com/renzodavid9/tekton-remote-srcs
+        - name: revision
+          value: main
+        - name: pathInRepo
+          value: /steps/remote-step-01.yaml
+      params:
+        - name: param-1
+          value: "value1 from task"
+
+    - name: second-step
+      image: bash:latest
+      script: |
+        echo -n "{\"uri\":\"https://github.com/repo/4\", \"digest\":\"sha1:68c8f8311c598a04bc629fc92fe87785a19763e4\"}" > $(results.art3-ARTIFACT_INPUTS.path)
+
+        echo -n "{\"uri\":\"gcr.io/img/2\", \"digest\":\"sha256:21ff370d4db229a025067f52f87ac9c1bead8cd1068b72febadfa3e45f377101\", \"isBuildArtifact\": \"true\"}" > $(results.art4-ARTIFACT_OUTPUTS.path)
