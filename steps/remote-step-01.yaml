@@ -1,0 +1,58 @@
+apiVersion: tekton.dev/v1alpha1
+kind: StepAction
+metadata:
+  name: remote-step-1
+spec:
+  params:
+    - name: CHAINS-GIT_URL
+      type: string
+      default: https://github.com/repo/1
+
+    - name: CHAINS-GIT_COMMIT
+      type: string
+      default: 7f2f46e1b97df36b2b82d1b1d87c81b8b3d21601
+
+    - name: param-1
+      type: string
+
+
+  results:
+    - name: art1-ARTIFACT_OUTPUTS
+      type: object
+      properties:
+        uri: {}
+        digest: {}
+        isBuildArtifact: {}
+
+    - name: result-1
+      type: string
+
+
+    - name: CHAINS-GIT_URL
+      type: string
+
+    - name: CHAINS-GIT_COMMIT
+      type: string
+
+  
+    - name: art2-ARTIFACT_INPUTS
+      type: object
+      properties:
+        uri: {}
+        digest: {}
+
+  image: bash:latest
+
+  env:
+    - name: OTHERRES
+      value: $(params.param-1) 
+
+  script: |
+    echo -n "{\"uri\":\"gcr.io/image/1\", \"digest\":\"sha256:b8f952d8bb3320626a31588673389c96fc18050e606774ba80dbc83eccfe5915\", \"isBuildArtifact\": \"true\"}" > $(step.results.art1-ARTIFACT_OUTPUTS.path)
+
+    echo -n $OTHERRES > $(step.results.result-1.path)
+
+    echo -n "https://github.com/repo/2" > $(step.results.CHAINS-GIT_URL.path)
+    echo -n "4929c41af77750191e0117ad9099937141dcf5c0" > $(step.results.CHAINS-GIT_COMMIT.path)
+
+    echo -n "{\"uri\":\"https://github.com/repo/3\", \"digest\":\"sha1:3bf8cac208463f2a0fd33b76301d2e56fd530330\"}" > $(step.results.art2-ARTIFACT_INPUTS.path)
