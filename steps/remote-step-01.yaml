@@ -27,6 +27,9 @@ spec:
     - name: result-1
       type: string
 
+    - name: result-not-used-2
+      type: string
+
 
     - name: CHAINS-GIT_URL
       type: string
@@ -51,6 +54,7 @@ spec:
     echo -n "{\"uri\":\"gcr.io/image/1\", \"digest\":\"sha256:b8f952d8bb3320626a31588673389c96fc18050e606774ba80dbc83eccfe5915\", \"isBuildArtifact\": \"true\"}" > $(step.results.art1-ARTIFACT_OUTPUTS.path)
 
     echo -n $OTHERRES > $(step.results.result-1.path)
+    echo -n $OTHERRES > $(step.results.result-not-used-2.path)
 
     echo -n "https://github.com/repo/2" > $(step.results.CHAINS-GIT_URL.path)
     echo -n "4929c41af77750191e0117ad9099937141dcf5c0" > $(step.results.CHAINS-GIT_COMMIT.path)
