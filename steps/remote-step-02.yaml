@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1alpha1
+kind: StepAction
+metadata:
+  name: remote-step-02
+spec:
+  results:
+    - name: art1-ARTIFACT_OUTPUTS
+      type: object
+      properties:
+        uri: {}
+        digest: {}
+        isBuildArtifact: {}
+
+  image: bash:latest
+
+  script: |
+    echo -n "{\"uri\":\"gcr.io/image/1\", \"digest\":\"sha256:b8f952d8bb3320626a31588673389c96fc18050e606774ba80dbc83eccfe5915\", \"isBuildArtifact\": \"true\"}" > $(step.results.art1-ARTIFACT_OUTPUTS.path)
