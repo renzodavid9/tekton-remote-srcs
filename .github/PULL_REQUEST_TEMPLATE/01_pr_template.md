@@ -1,3 +1,6 @@
+---
+labels: bug
+---
 # New PR
 
 ## Description:
