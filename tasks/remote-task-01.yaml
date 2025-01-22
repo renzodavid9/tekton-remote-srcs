@@ -21,10 +21,10 @@ spec:
 
     - name: art3-ARTIFACT_OUTPUTS
       type: object
-      properties:
+      properties: # some comments for PR
         uri: {}
         digest: {}
-        isBuildArtifact: {}
+        isBuildArtifact: {} 
 
   steps:
     - name: first-step
